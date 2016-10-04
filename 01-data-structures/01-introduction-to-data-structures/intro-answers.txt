@@ -1,0 +1,31 @@
+1. How does your data structure allow developers to access and manipulate the data?
+  For the Line structure:
+    To add: join(person)
+      The push method adds a new element to the array from the back.
+    To delete: leave(person)
+      The delete method removes the element from the array.
+
+  For the Screen structure, I create a hash. The key is the coordinate(x, y) and the value is the Pixel instance.
+      e.g. {[x, y]: pixel}
+    To add: insert(pixel, x, y)
+      Using the keys method, I can get the array with the keys of the hash. If this array doesn't include [x, y] and x, y values are positive numbers then the new key-value pair will be added to the hash.
+
+2. If a developer wanted to find a specific element in your data structure, how would you search for it?
+  For the Line structure:
+    To search: search(person)
+      The include? method returns a boolean value. If the array includes the argument it returns true, if not it returns false.
+      Then if true, the index method returns the index of the argument. With this index, I can get the value of the element from the array.
+
+  For the Screen structure:
+    To search: at(x, y)
+      I can retrieve the value for the key [x, y] in the @matrix hash
+
+
+3. What other real-world data can each structure represent?
+  For the Line structure:
+    The product inventory tracking system.
+    (The old items are pushed to the front of the array as the new items are inserted from the back. Thus it is easy to track the old items.)
+
+  For the Screen structure:
+    The contacts or rating system.
+    (It would be easy to add, delete or update the list-hash, since the order of the contents doesn't matter.)
