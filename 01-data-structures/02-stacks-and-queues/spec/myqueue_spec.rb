@@ -1,6 +1,6 @@
 include RSpec
 
-require_relative 'myqueue'
+require_relative '../myqueue/myqueue'
 
 RSpec.describe MyQueue, type: Class do
   let(:q) { MyQueue.new }
@@ -22,6 +22,17 @@ RSpec.describe MyQueue, type: Class do
       expect(q.empty?).to eq false
       q.dequeue
       expect(q.empty?).to eq true
+    end
+
+    it "removes an item from the end" do
+      q.enqueue("dog")
+      q.enqueue("cat")
+      q.enqueue("bird")
+      expect(q.head).to eq "bird"
+      expect(q.tail).to eq "dog"
+      q.dequeue
+      expect(q.head).to eq "bird"
+      expect(q.tail).to eq "cat"
     end
 
     it "updates the head and tail accessors properly" do
