@@ -1,7 +1,7 @@
 include RSpec
 
-require_relative 'node'
-require_relative 'linked_list'
+require_relative '../node'
+require_relative '../linked_list'
 
 RSpec.describe LinkedList, type: Class do
   let(:n1) { Node.new("Rob") }
@@ -37,6 +37,14 @@ RSpec.describe LinkedList, type: Class do
     end
 
     specify { expect { llist.print }.to output("Rob\nBen\n").to_stdout }
+  end
+
+  describe "#print one element" do
+    before do
+      llist.add_to_tail(n1)
+    end
+
+    specify { expect { llist.print }.to output("Rob\n").to_stdout }
   end
 
   describe "#delete" do
@@ -87,6 +95,17 @@ RSpec.describe LinkedList, type: Class do
       expect(llist.head).to eq n1
       llist.remove_front
       expect(llist.head).to eq nil
+    end
+  end
+
+  describe "#search" do
+    it "returns the node at the given location" do
+      llist.add_to_tail(n1)
+      llist.add_to_tail(n2)
+      llist.add_to_tail(n3)
+      expect(llist.search(0)).to eq n1
+      expect(llist.search(1)).to eq n2
+      expect(llist.search(2)).to eq n3
     end
   end
 end
