@@ -1,0 +1,8 @@
+1. Explain why doubling the size of the underlying array of your HashClass may be a poor idea.
+Hints:
+
+* Doubling the size of the area increased the number of open slots in the array for potential values which may lead to more fragmentation.
+* Doubling the size of an array (allocating memory) is a slow operation.
+
+  There is a possibility that particular numbers would still have the same modulo value even after doubling the size of the hash array.
+  For example, the size of the hash array was initially 6. After resizing, it becomes 12. 12 is multiple of 6. 6 is divisible by 2 and 3, also 12 is divisible by 2 and 3.
