@@ -1,0 +1,8 @@
+1. Describe three collision resolution strategies not mentioned here.
+    * Quadratic Probing: It provides a better distribution of keys when collisions occur. If the hash index is K % size, the next location is computed using the squence (K + 1) % size, (K + 4) % size, (K + 9) % size ...
+
+    * Double Hashing: It spreads out the search for an empty slot by using a second hash function. If hash1(key) is not empty, hash2(key) is calculated. The next location is computed like: hash1(key) + 1hash2(key), hash1(key) + 2hash2(key), hash1(key) + 3hash2(key)... so on until an opening is found.
+
+2. Create your own collision resolution strategy and describe how it works.
+    I think this collision resolution strategy could work:
+    It is the same as the Linear Probing until a collision occurs. When there isn't any more empty location for the new key/value pair, increasing the hash size just by one could work as well and in this way there wouldn't be any "nil" slots so it could prevent the unnecessary memory usage.
