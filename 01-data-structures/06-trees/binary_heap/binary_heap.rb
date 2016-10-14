@@ -1,34 +1,43 @@
 require_relative 'node'
 require_relative 'helper'
 
-class BinarySearchTree
+class BinaryHeap
 
   def initialize(root_node)
-    @root_node = root_node
     @helper = Helper.new
-    @print_str = @helper.format(@root_node)
-    @queue = []
   end
 
   def insert(root, node)
+    queue = []
     current = root
-    while !current.nil?
-      if current.rating > node.rating
-        if current.left.nil?
-          current.left = node
-          return
-        else
-          current = current.left
-        end
-      else
-        if current.right.nil?
-          current.right = node
-          return
-        else
-          current = current.right
-        end
-      end
+    while current.left && current.right
+      queue.unshift(current.left)
+      queue.unshift(current.right)
+      predecessor = queue.pop
+      current = predecessor
     end
+
+    if current.left.nil?
+      current.left = node
+    else
+      current.right = node
+    end
+    swap(root, node)
+
+    # temp = node
+    # while root != temp
+    #   min_node = min?(node)
+    #   if min_node == -1
+    #     node = node.left
+    #     current.left = temp
+    #   elsif min_node == 1
+    #     current = current.right
+    #     current.right = temp
+    #   end
+    #   if p_node = find_parent(root, current)
+    #     temp = p_node
+    #   end
+    # end
   end
 
   # Recursive Depth First Search
@@ -97,6 +106,27 @@ class BinarySearchTree
       printf(@queue[-1])
     else
       puts @print_str
+    end
+  end
+
+  private
+
+  def swap(root, current)
+    min_node = @helper.min?(current)
+    temp = current
+    if min_node == -1
+      current = current.left
+      current.left = temp
+    elsif min_node == 1
+      current = current.right
+      current.right = temp
+    end
+    puts "current: " + current.title
+    puts "left: " + current.left.title if current.left
+    puts "temp: " + temp.title
+    return if root == temp
+    if p_node = @helper.find_parent(root, current)
+      swap(root, p_node)
     end
   end
 end

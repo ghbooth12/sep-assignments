@@ -1,6 +1,7 @@
 include RSpec
 
-require_relative 'binary_search_tree'
+require_relative '../binary_tree/node'
+require_relative '../binary_tree/binary_search_tree'
 
 RSpec.describe BinarySearchTree, type: Class do
   let (:root) { Node.new("The Matrix", 87) }
@@ -51,6 +52,16 @@ RSpec.describe BinarySearchTree, type: Class do
       tree.insert(root, empire)
       tree.insert(root, mad_max_2)
       expect(root.right.right.title).to eq "Mad Max 2: The Road Warrior"
+    end
+
+    it "inserts properly multiple nodes" do
+      tree.insert(root, hope)
+      tree.insert(root, empire)
+      tree.insert(root, jedi)
+      tree.insert(root, martian)
+      tree.insert(root, pacific_rim)
+      tree.insert(root, inception)
+      expect(root.left.left.title).to eq "Pacific Rim"
     end
   end
 
