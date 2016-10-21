@@ -1,0 +1,53 @@
+1.Print both Trees to the console and compare the difference between your Binary Search Tree and your Heap.
+      ======== Binary Tree ========
+      Flipped: 55
+      Frozen: 89
+      Alice in Wonderland: 79
+      Aladdin: 94
+      Cinderella: 83
+      Beauty and the Beast: 93
+      Ratatouille: 96
+      Mulan: 86
+      Toy Story: 100
+      Shrek: 88
+      101 Dalmatians: 98
+      Kung Fu Panda: 87
+      ======== Binary Heap ========
+      Flipped: 55
+      Alice in Wonderland: 79
+      Cinderella: 83
+      Mulan: 86
+      Shrek: 88
+      Kung Fu Panda: 87
+      Beauty and the Beast: 93
+      Ratatouille: 96
+      Toy Story: 100
+      Frozen: 89
+      101 Dalmatians: 98
+      Aladdin: 94
+
+      =======> Binary Tree has many empty slots on some levels, whereas Binary Heap has fully filled levels except the last level. Most of nodes in the upper levels in Binary Heap have relatively smaller value than the ones in the lower levels. But Binary tree doesn't.
+
+
+2. Insert all numbers from 1 to 100000 into both Trees, then use Benchmark to compare performance:
+
+    * How much time does an average insertion consume in the Binary Search Tree compared to the Heap?
+        Tree time for inserting: 1.7071401299908757 seconds
+        Heap time for inserting: 0.8438630650052801 seconds
+        Binary Heap is 2.0230061022758403 times faster than Binary Tree.
+
+    * How much time does finding 50000 in the Binary Search Tree consume compared to the Heap?
+        Tree time for finding: 5.5804033763706684e-05 seconds
+        Heap time for finding: 0.016545724938623607 seconds
+        Binary Tree is 296.49693440950614 times faster than Binary Heap.
+
+    * How much time does the average deletion consume in a Binary Search Tree compared to the Heap?
+        Tree time for deleting: 3.478908911347389e-05 seconds
+        Heap time for deleting: 0.01629563805181533 seconds
+        Binary Tree is 468.41232314714426 times faster than Binary Heap.
+
+    * When would you use a Binary Search Tree and why?
+        For searching or deleting a specific node, a Binary Search Tree is faster than a Heap. Because I think...both "search" and "delete" methods use a recursion(?)
+
+    * When would you use an Heap and why?
+        For inserting a new node, a Heap is faster than a Binary Search Tree. A heap has fully filled levels except the last level. So a new node is simply added to the leftmost spot on the last level. The new node's value still needs to be compared with its parent node's value but it complies the heap's rule(either MAX Heap or MIN heap), the node swapping won't happen. However when a Binary Search Tree inserts a new node, the new node has to be compared in each level until it reaches the last level. 
