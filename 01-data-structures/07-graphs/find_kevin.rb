@@ -1,145 +1,83 @@
-require_relative 'node'
+class FindKevin
+  attr_accessor :path
+  attr_accessor :paths
 
-Kevin_Bacon = Node.new("Kevin Bacon")
-Dianne_Wiest = Node.new("Dianne Wiest")
-Chris_Penn = Node.new("Chris Penn")
-Johnny_Depp = Node.new("Johnny Depp")
-Winona_Ryder = Node.new("Winona Ryder")
-Freddie_Highmore = Node.new("Freddie Highmore")
-AnnaSophia_Robb = Node.new("AnnaSophia Robb")
-Carrie_Underwood = Node.new("Carrie Underwood")
-Dennis_Quaid = Node.new("Dennis Quaid")
-John_Goodman = Node.new("John Goodman")
-Wayne_Knight = Node.new("Wayne Knight")
-Kevin_Costner = Node.new("Kevin Costner")
-Lindsay_Lohan = Node.new("Lindsay Lohan")
-Natasha_Richardson = Node.new("Natasha Richardson")
-Rachel_McAdams = Node.new("Rachel McAdams")
-Amanda_Seyfried = Node.new("Amanda Seyfried")
-Ryan_Gosling = Node.new("Ryan Gosling")
-James_Garner = Node.new("James Garner")
-Sarah_Jessica_Parker = Node.new("Sarah Jessica Parker")
-
-
-Dianne_Wiest.film_actor_hash["Edward Scissorhands"] = [Johnny_Depp, Winona_Ryder]
-Dianne_Wiest.film_actor_hash["Footloose"] = [Kevin_Bacon, Chris_Penn, Sarah_Jessica_Parker]
-
-Chris_Penn.film_actor_hash["Footloose"] = [Dianne_Wiest, Kevin_Bacon, Sarah_Jessica_Parker]
-
-Sarah_Jessica_Parker.film_actor_hash["Footloose"] = [Dianne_Wiest, Kevin_Bacon, Chris_Penn]
-
-Johnny_Depp.film_actor_hash["Charlie and the Chocolate Factory"] = [Freddie_Highmore, AnnaSophia_Robb]
-Johnny_Depp.film_actor_hash["Edward Scissorhands"] = [Dianne_Wiest, Winona_Ryder]
-
-Winona_Ryder.film_actor_hash["Edward Scissorhands"] = [Johnny_Depp, Dianne_Wiest]
-
-Freddie_Highmore.film_actor_hash["Charlie and the Chocolate Factory"] = [Johnny_Depp, AnnaSophia_Robb]
-
-AnnaSophia_Robb.film_actor_hash["Charlie and the Chocolate Factory"] = [Johnny_Depp, Freddie_Highmore]
-AnnaSophia_Robb.film_actor_hash["Soul Surfer"] = [Carrie_Underwood, Dennis_Quaid]
-
-Carrie_Underwood.film_actor_hash["Soul Surfer"] = [AnnaSophia_Robb, Dennis_Quaid]
-
-Dennis_Quaid.film_actor_hash["Soul Surfer"] = [AnnaSophia_Robb, Carrie_Underwood]
-Dennis_Quaid.film_actor_hash["Everybody's All-American"] = [John_Goodman, Wayne_Knight]
-Dennis_Quaid.film_actor_hash["The Parent Trap"] = [Lindsay_Lohan, Natasha_Richardson]
-
-John_Goodman.film_actor_hash["Everybody's All-American"] = [Dennis_Quaid, Wayne_Knight]
-
-Wayne_Knight.film_actor_hash["JFK"] = [Kevin_Costner, Kevin_Bacon]
-
-Kevin_Costner.film_actor_hash["JFK"] = [Wayne_Knight, Kevin_Bacon]
-
-Lindsay_Lohan.film_actor_hash["The Parent Trap"] = [Dennis_Quaid, Natasha_Richardson]
-Lindsay_Lohan.film_actor_hash["Mean Girls"] = [Rachel_McAdams, Amanda_Seyfried]
-
-Rachel_McAdams.film_actor_hash["Mean Girls"] = [Amanda_Seyfried, Lindsay_Lohan]
-Rachel_McAdams.film_actor_hash["The Notebook"] = [Ryan_Gosling, James_Garner]
-
-Ryan_Gosling.film_actor_hash["The Notebook"] = [James_Garner, Rachel_McAdams]
-
-James_Garner.film_actor_hash["The Notebook"] = [Rachel_McAdams, Ryan_Gosling]
-
-Amanda_Seyfried.film_actor_hash["Mean Girls"] = [Lindsay_Lohan, Rachel_McAdams]
-
-Natasha_Richardson.film_actor_hash["The Parent Trap"] = [Lindsay_Lohan, Dennis_Quaid]
-
-Wayne_Knight.film_actor_hash["Everybody's All-American"] = [John_Goodman, Dennis_Quaid]
-
-# all_paths = Array.new() # sorted, shortest path at 0, longest at n-1
-# start = Freddie_Highmore
-# path, path_weight = find_kevin_bacon(start)
-# all_paths.push(path)
-# shortest_path = all_paths[0]
-
-$path = []
-$paths = []
-
-def included_film?(film)
-  bool = false
-  # if current path includes film
-  if $path.include?(film)
-    # puts "Already include: #{film}"
-    bool = true
+  def initialize
+    @path = []
+    @paths = []
+    @queue = []
   end
 
-  # if any past paths include film
-  for path in $paths
-    # puts "for loop: #{path}"
-    if path.include?(film)
-      if $path[-1] == film
-        # puts "BEFORE DELETE: #{$path}"
-        $path.pop # so it can create new path
-        # puts "AFTER DELETE: #{$path}"
-      end
+  # This method verifies if the given 'film' is already visited.
+  # If so, it returns true. If not, it returns false.
+  def included_film?(film)
+    bool = false
+    if @path.include?(film) # if current path includes film
       bool = true
     end
-  end
-  bool
-end
-
-def find_shortest(paths)
-  l = 10
-  for path in paths
-    if path.length < l
-      l = path.length
-      answer = path
-    end
-  end
-  answer
-end
-
-def find_kevin_bacon(start)
-  # puts "-------------#{start.name}"
-  return $path if start == Kevin_Bacon
-  return if start.film_actor_hash == {}
-
-  for film in start.film_actor_hash.keys
-    # puts film
-      if !included_film?(film)
-        $path.push(film)
-        # puts "pushed: #{film} >> $path: #{$path}"
-        if start.film_actor_hash[film].include?(Kevin_Bacon)
-          unless $paths.include?($path)
-            # Just using $paths.push($path) will be a problem in the included_film?(film).
-            index = $paths.length
-            $paths[index] = []
-            for i in $path
-            	$paths[index] << i
-            end
+    unless @paths.empty?
+      for path in @paths
+        if path.include?(film) # if any past paths include film
+          if @path[-1] == film && @path.length != 1
+            @path.pop # remove the film which it already visited.
           end
-          # puts "Added to paths #{$paths}"
-        end
-
-        for actor in start.film_actor_hash[film]
-          find_kevin_bacon(actor)
+          bool = true
         end
       end
+    end
+    bool
   end
 
-  return find_shortest($paths)
-end
+  # This method returns the path which has the shortest length out of the given 'paths' array.
+  def shortest_path(paths)
+    l = paths[0].length
+    shortest = paths[0]
+    for i in 1...paths.length
+      if l > paths[i].length
+        l = paths[i].length
+        shortest = paths[i]
+      end
+    end
+    shortest
+  end
 
-# p find_kevin_bacon(Ryan_Gosling) # ["The Notebook", "Mean Girls", "The Parent Trap", "Everybody's All-American", "JFK"]
-# p find_kevin_bacon(AnnaSophia_Robb) # ["Charlie and the Chocolate Factory", "Edward Scissorhands", "Footloose"]
-# p find_kevin_bacon(Wayne_Knight) # ["JFK"]
+  # This method add the newly found @path into the @paths array.
+  # Just using @paths.push(@path) will be a problem in the included_film?(film) when it 'pop's the @path.
+  # When it 'pop's the @path, it also 'pop's the path which is inside @paths array.
+  def add_path
+    index = @paths.length
+    @paths[index] = []
+    for i in @path
+      @paths[index] << i
+    end
+    @path.pop
+  end
+
+  # This method finds the shortest path to 'Kevin Bacon' node.
+  def find_kevin_bacon(start, kevin)
+    return @path if start == kevin
+
+    @queue << start
+    for film in start.film_actor_hash.keys
+      if !included_film?(film)
+        @path.push(film)
+        if start.film_actor_hash[film].include?(kevin)
+          add_path # Adds the new path into @paths
+          break
+        else
+          for actor in start.film_actor_hash[film]
+            find_kevin_bacon(actor, kevin) # Recursion!
+          end
+        end
+      end
+    end
+
+    @queue.pop
+    # When it comes back to the node where it first started searching,
+    # it empties the @path array so it can start adding a new film
+    # But it only empties when @path at least has one film,
+    # otherwise it will keep emptying @path array until @queue contains at least two actors.
+    @path = [] if @queue.length == 1 && @path.length > 1
+    return shortest_path(@paths) unless @paths.empty?
+  end
+end
